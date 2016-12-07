@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { GridOptions } from 'ag-grid/main';
-
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'ag-grid!';
+export class AppComponent {  
+  host = environment.host;
+  user = environment.user;
+  password = environment.password;
+  refreshIntervalInSeconds = environment.refreshIntervalInSeconds;
 
   public showGrid: boolean;
   private gridOptions: GridOptions;

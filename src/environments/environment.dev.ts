@@ -6,7 +6,7 @@
 export const environment = {
   production: false,
   host: '10.10.10.10',
-  user: 'myUser',
-  password: 'myPass',
+  user: 'admin',
+  password: 'admin',
   refreshIntervalInSeconds: 60
 };

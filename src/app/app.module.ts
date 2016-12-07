@@ -14,7 +14,7 @@ import {AgGridModule} from 'ag-grid-ng2/main';
     BrowserModule,
     FormsModule,
     HttpModule,
-    AgGridModule.withComponents()
+    AgGridModule.withComponents([])
   ],
   providers: [],
   bootstrap: [AppComponent]
