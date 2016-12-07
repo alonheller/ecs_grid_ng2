@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GridOptions } from 'ag-grid/main';
 import { environment } from '../environments/environment';
+import { AuthService } from './auth/shared/auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {  
+export class AppComponent implements OnInit {
   host = environment.host;
   user = environment.user;
   password = environment.password;
@@ -18,7 +19,7 @@ export class AppComponent {
   public rowData: any[];
   private columnDefs: any[];
 
-  constructor() {
+  constructor(private authService: AuthService) {
     // we pass an empty gridOptions in, so we can grab the api out
     this.gridOptions = <GridOptions>{};
     this.createRowData();
@@ -26,10 +27,14 @@ export class AppComponent {
     this.showGrid = true;
   }
 
+  ngOnInit() {
+    this.authService.login();
+  }
+
   private createRowData() {
     var rowData: any[] = [];
 
-    for (var i = 0; i < 10000; i++) {      
+    for (var i = 0; i < 10000; i++) {
       rowData.push({
         location: 'aaa',
         asset: 'myAsset',
@@ -68,7 +73,7 @@ export class AppComponent {
       {
         headerName: "Status", field: "status",
         width: 150, pinned: true
-      }      
+      }
     ];
   }
 

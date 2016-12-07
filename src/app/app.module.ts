@@ -4,7 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import {AgGridModule} from 'ag-grid-ng2/main';
+import { AgGridModule } from 'ag-grid-ng2/main';
+import { AuthModule } from './auth/auth.module';
+
+import { AuthService } from './auth/shared/auth.service';
 
 @NgModule({
   declarations: [
@@ -14,9 +17,10 @@ import {AgGridModule} from 'ag-grid-ng2/main';
     BrowserModule,
     FormsModule,
     HttpModule,
-    AgGridModule.withComponents([])
+    AgGridModule.withComponents([]),
+    AuthModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
