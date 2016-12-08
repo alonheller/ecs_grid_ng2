@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
-  host: '10.10.10.10',
+  host: 'http://192.168.0.81:10200/gateway.aspx',
   user: 'myUser',
-  password: 'myPass'
+  password: 'myPass',
+  refreshIntervalInSeconds: 60
 };
