@@ -8,5 +8,7 @@ export const environment = {
   host: 'http://192.168.0.81:10200/gateway.aspx',
   user: 'admin',
   password: 'admin',
-  refreshIntervalInSeconds: 60
+  refreshIntervalInSeconds: 60,
+  showWarnings: true,
+  openTickets: true
 };

@@ -17,8 +17,7 @@ export class AuthService {
   login() {
     console.log('Trying to login with: ', this.user);    
 
-    this.dataService.login(this.user, this.password)
-      .subscribe();
+    return this.dataService.login(this.user, this.password);      
   }
 
   /*

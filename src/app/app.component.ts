@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GridOptions } from 'ag-grid/main';
 import { environment } from '../environments/environment';
 import { AuthService } from './auth/shared/auth.service';
+import { DataService } from './data/shared/data.service';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,9 @@ export class AppComponent implements OnInit {
   host = environment.host;
   user = environment.user;
   password = environment.password;
+  showWarnings = environment.showWarnings;
+  openTickets = environment.openTickets;
+
   refreshIntervalInSeconds = environment.refreshIntervalInSeconds;
 
   public showGrid: boolean;
@@ -19,29 +23,43 @@ export class AppComponent implements OnInit {
   public rowData: any[];
   private columnDefs: any[];
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private dataService:DataService) {
     // we pass an empty gridOptions in, so we can grab the api out
     this.gridOptions = <GridOptions>{};
-    this.createRowData();
-    this.createColumnDefs();
-    this.showGrid = true;
   }
 
   ngOnInit() {
-    this.authService.login();
+    this.authService.login()
+      .subscribe(() => this.getUserLocations());
   }
 
-  private createRowData() {
+  private getUserLocations() {
+    this.dataService.getUserLocations()
+      .subscribe((res:any) => {
+        this.getLocationAlarms(res.ReturnValue.$values[0].ID)
+      });
+  }
+
+  private getLocationAlarms(locationId:number) {
+    this.dataService.getLocationAlarms(locationId, this.showWarnings)
+      .subscribe((res) => {
+        this.createRowData(res);
+        this.createColumnDefs();
+        this.showGrid = true;
+      });
+  }
+
+  private createRowData(rows:Array<any>) {
     var rowData: any[] = [];
 
-    for (var i = 0; i < 10000; i++) {
+    for (var i = 0; i < rows.length; i++) {
       rowData.push({
-        location: 'aaa',
-        asset: 'myAsset',
-        assetMeasure: "myAsset",
-        value: "value",
-        duration: "duration",
-        status: "status"
+        location: rows[i].LocationName,
+        asset: rows[i].AssetName,
+        assetMeasure: rows[i].AssetMeasureName,
+        value: rows[i].LastValue,
+        duration: rows[i].LastUpdate,
+        status: rows[i].StatusCode
       });
     }
 
