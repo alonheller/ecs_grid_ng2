@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { AgGridModule } from 'ag-grid-ng2/main';
+import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { AuthModule } from './auth/auth.module';
 
 import { AuthService } from './auth/shared/auth.service';
@@ -15,8 +16,9 @@ import { DataService } from './data/shared/data.service';
   ],
   imports: [
     BrowserModule,
-    FormsModule,    
+    FormsModule,
     HttpModule,
+    NgbModule.forRoot(),
     AgGridModule.withComponents([]),
     AuthModule
   ],
