@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
       .subscribe((res) => {
         this.createRowData(res);
         this.createColumnDefs();
-        this.showGrid = true;
+        this.gridOptions.api.hideOverlay()
       });
   }
 
@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
       });
     }
 
-    this.rowData = rowData;
+    this.gridOptions.api.setRowData(rowData);
   }
 
   private createColumnDefs() {
