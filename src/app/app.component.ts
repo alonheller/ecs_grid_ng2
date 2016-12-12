@@ -67,15 +67,22 @@ export class AppComponent implements OnInit {
         value: rows[i].LastValue,
         duration: rows[i].LastUpdate,
         status: rows[i].StatusCode,
-        precision: rows[i].Precision
+        precision: rows[i].Precision,
+        measureUnitName: rows[i].MeasureUnitName,
+        measureUnitID: rows[i].MeasureUnitID
       });
     }
 
-    this.gridOptions.api.setRowData(rowData);
+    this.gridOptions.api.setRowData(rowData);;
   }
 
   myCellRenderer(params) {
-    return '<span>' + params.value.toFixed(params.data.precision) + '</span>';
+    return `<span>
+            ${params.value.toFixed(params.data.precision)}
+            ${params.data.measureUnitID == 3 ? '°' : ''}
+            ${params.data.measureUnitID == 8 ? '°' : ''}
+            ${params.data.measureUnitName}
+            </span>`;
   }
 
   private createColumnDefs() {
@@ -85,6 +92,12 @@ export class AppComponent implements OnInit {
       },
       {
         headerName: "Precision", field: "precision", hide: true
+      },
+      {
+        headerName: "MeasureUnitName", field: "measureUnitName", hide: true
+      },
+      {
+        headerName: "MeasureUnitID", field: "measureUnitID", hide: true
       },
       {
         headerName: "Equipment", field: "asset"
