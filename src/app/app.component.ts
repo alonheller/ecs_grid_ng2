@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { GridOptions } from 'ag-grid/main';
-import { environment } from '../environments/environment';
-import { AuthService } from './auth/shared/auth.service';
-import { DataService } from './data/shared/data.service';
+import {Component, OnInit} from '@angular/core';
+import {GridOptions} from 'ag-grid/main';
+import {environment} from '../environments/environment';
+import {AuthService} from './auth/shared/auth.service';
+import {DataService} from './data/shared/data.service';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   public rowData: any[];
   private columnDefs: any[];
 
-  constructor(private authService: AuthService, private dataService:DataService) {
+  constructor(private authService: AuthService, private dataService: DataService) {
     this.gridOptions = {
       enableColResize: true
     };
@@ -36,12 +36,12 @@ export class AppComponent implements OnInit {
 
   private getUserLocations() {
     this.dataService.getUserLocations()
-      .subscribe((res:any) => {
+      .subscribe((res: any) => {
         this.getLocationAlarms(res.ReturnValue.$values[0].ID)
       });
   }
 
-  private getLocationAlarms(locationId:number) {
+  private getLocationAlarms(locationId: number) {
     this.dataService.getLocationAlarms(locationId, this.showWarnings)
       .subscribe((res) => {
         this.gridOptions.api.addEventListener('gridReady', this.onGridReady);
@@ -51,11 +51,12 @@ export class AppComponent implements OnInit {
       });
   }
 
-  private onGridReady(event:Event) {
+  private onGridReady(event: Event) {
+    console.log('GRID IS READY :)')
     this.gridOptions.api.sizeColumnsToFit();
   }
 
-  private createRowData(rows:Array<any>) {
+  private createRowData(rows: Array<any>) {
     var rowData: any[] = [];
 
     for (var i = 0; i < rows.length; i++) {
@@ -65,11 +66,16 @@ export class AppComponent implements OnInit {
         assetMeasure: rows[i].AssetMeasureName,
         value: rows[i].LastValue,
         duration: rows[i].LastUpdate,
-        status: rows[i].StatusCode
+        status: rows[i].StatusCode,
+        precision: rows[i].Precision
       });
     }
 
     this.gridOptions.api.setRowData(rowData);
+  }
+
+  myCellRenderer(params) {
+    return '<span>' + params.value.toFixed(params.data.precision) + '</span>';
   }
 
   private createColumnDefs() {
@@ -78,13 +84,17 @@ export class AppComponent implements OnInit {
         headerName: "Location", field: "location", width: 220
       },
       {
+        headerName: "Precision", field: "precision", hide: true
+      },
+      {
         headerName: "Equipment", field: "asset"
       },
       {
         headerName: "Asset Measure", field: "assetMeasure"
       },
       {
-        headerName: "Value", field: "value"
+        headerName: "Value", field: "value",
+        cellRenderer: this.myCellRenderer
       },
       {
         headerName: "Duration", field: "duration"

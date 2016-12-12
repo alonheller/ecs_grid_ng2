@@ -1,5 +1,16 @@
 <nav class="navbar navbar-dark bg-inverse">
-  <img alt="In n Out" src="assets/in-n-out.png">
+  <div class="row">
+    <div class="col-md-6">
+      <img alt="In n Out" src="assets/in-n-out.png">
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-2 text-right vcenter">
+      <span class="tag tag-pill tag-warning">Warning (1)</span>
+      <span class="tag tag-pill tag-danger">Disconnected, Critical (592)</span>
+    </div>
+  </div>
+
+
 </nav>
 
 <ag-grid-ng2 #agGrid class="ag-dark" [gridOptions]="gridOptions"

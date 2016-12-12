@@ -6,3 +6,7 @@ ag-grid-ng2 {
 img {
   height: 80px;
 }
+
+.vcenter {
+  top: 25px;
+}
