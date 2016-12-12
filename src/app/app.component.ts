@@ -27,7 +27,9 @@ export class AppComponent implements OnInit {
 
   constructor(private authService: AuthService, private dataService: DataService) {
     this.gridOptions = {
-      enableColResize: true
+      enableColResize: true,
+      enableSorting: true
+
     };
   }
 
@@ -90,6 +92,11 @@ export class AppComponent implements OnInit {
   durationCellRenderer(params) {
     return `<span>${moment(params.value).fromNow()}</span>`;
   }
+
+  timeCellRenderer(params) {
+    return `<span>${moment(params.value).format('lll')}</span>`;
+  }
+
   private createColumnDefs() {
     this.columnDefs = [
       {
@@ -113,6 +120,10 @@ export class AppComponent implements OnInit {
       {
         headerName: "Value", field: "value",
         cellRenderer: this.valueCellRenderer
+      },
+      {
+        headerName: "Time", field: "statusTimestamp", sort: 'desc',
+        cellRenderer: this.timeCellRenderer
       },
       {
         headerName: "Duration", field: "statusTimestamp",
