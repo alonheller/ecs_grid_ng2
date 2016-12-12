@@ -4,6 +4,8 @@ import {environment} from '../environments/environment';
 import {AuthService} from './auth/shared/auth.service';
 import {DataService} from './data/shared/data.service';
 
+declare var moment: any;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -65,18 +67,18 @@ export class AppComponent implements OnInit {
         asset: rows[i].AssetName,
         assetMeasure: rows[i].AssetMeasureName,
         value: rows[i].LastValue,
-        duration: rows[i].LastUpdate,
         status: rows[i].StatusCode,
         precision: rows[i].Precision,
         measureUnitName: rows[i].MeasureUnitName,
-        measureUnitID: rows[i].MeasureUnitID
+        measureUnitID: rows[i].MeasureUnitID,
+        statusTimestamp: rows[i].StatusTimestamp
       });
     }
 
     this.gridOptions.api.setRowData(rowData);;
   }
 
-  myCellRenderer(params) {
+  valueCellRenderer(params) {
     return `<span>
             ${params.value.toFixed(params.data.precision)}
             ${params.data.measureUnitID == 3 ? '°' : ''}
@@ -85,6 +87,9 @@ export class AppComponent implements OnInit {
             </span>`;
   }
 
+  durationCellRenderer(params) {
+    return `<span>${moment(params.value).fromNow()}</span>`;
+  }
   private createColumnDefs() {
     this.columnDefs = [
       {
@@ -107,10 +112,11 @@ export class AppComponent implements OnInit {
       },
       {
         headerName: "Value", field: "value",
-        cellRenderer: this.myCellRenderer
+        cellRenderer: this.valueCellRenderer
       },
       {
-        headerName: "Duration", field: "duration"
+        headerName: "Duration", field: "statusTimestamp",
+        cellRenderer: this.durationCellRenderer
       },
       {
         headerName: "Status", field: "status"
