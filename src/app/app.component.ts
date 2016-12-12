@@ -24,8 +24,9 @@ export class AppComponent implements OnInit {
   private columnDefs: any[];
 
   constructor(private authService: AuthService, private dataService:DataService) {
-    // we pass an empty gridOptions in, so we can grab the api out
-    this.gridOptions = <GridOptions>{};
+    this.gridOptions = {
+      enableColResize: true
+    };
   }
 
   ngOnInit() {
@@ -43,10 +44,15 @@ export class AppComponent implements OnInit {
   private getLocationAlarms(locationId:number) {
     this.dataService.getLocationAlarms(locationId, this.showWarnings)
       .subscribe((res) => {
+        this.gridOptions.api.addEventListener('gridReady', this.onGridReady);
         this.createRowData(res);
         this.createColumnDefs();
-        this.gridOptions.api.hideOverlay()
+        this.gridOptions.api.hideOverlay();
       });
+  }
+
+  private onGridReady(event:Event) {
+    this.gridOptions.api.sizeColumnsToFit();
   }
 
   private createRowData(rows:Array<any>) {
@@ -69,28 +75,22 @@ export class AppComponent implements OnInit {
   private createColumnDefs() {
     this.columnDefs = [
       {
-        headerName: "Location", field: "location",
-        width: 150, pinned: true
+        headerName: "Location", field: "location", width: 220
       },
       {
-        headerName: "Equipment", field: "asset",
-        width: 150, pinned: true
+        headerName: "Equipment", field: "asset"
       },
       {
-        headerName: "Asset Measure", field: "assetMeasure",
-        width: 150, pinned: true
+        headerName: "Asset Measure", field: "assetMeasure"
       },
       {
-        headerName: "Value", field: "value",
-        width: 150, pinned: true
+        headerName: "Value", field: "value"
       },
       {
-        headerName: "Duration", field: "duration",
-        width: 150, pinned: true
+        headerName: "Duration", field: "duration"
       },
       {
-        headerName: "Status", field: "status",
-        width: 150, pinned: true
+        headerName: "Status", field: "status"
       }
     ];
   }
