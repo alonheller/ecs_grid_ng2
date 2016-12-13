@@ -3,6 +3,7 @@ import {GridOptions} from 'ag-grid/main';
 import {environment} from '../environments/environment';
 import {AuthService} from './auth/shared/auth.service';
 import {DataService} from './data/shared/data.service';
+import {Statuses} from './data/model/statuses';
 
 declare var moment: any;
 
@@ -77,7 +78,8 @@ export class AppComponent implements OnInit {
       });
     }
 
-    this.gridOptions.api.setRowData(rowData);;
+    this.gridOptions.api.setRowData(rowData);
+    ;
   }
 
   valueCellRenderer(params) {
@@ -95,6 +97,10 @@ export class AppComponent implements OnInit {
 
   timeCellRenderer(params) {
     return `<span>${moment(params.value).format('lll')}</span>`;
+  }
+
+  statusCellRenderer(params) {
+    return `<span>${Statuses[params.value.toString()].caption}</span>`;
   }
 
   private createColumnDefs() {
@@ -130,7 +136,8 @@ export class AppComponent implements OnInit {
         cellRenderer: this.durationCellRenderer
       },
       {
-        headerName: "Status", field: "status"
+        headerName: "Status", field: "status",
+        cellRenderer: this.statusCellRenderer
       }
     ];
   }
