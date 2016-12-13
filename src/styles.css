@@ -13,3 +13,19 @@ app-root {
   width: 100%;
   position: absolute;
 }
+
+.red {
+  background-color: #d9534f;
+}
+
+.orange {
+  background-color: #d6830d;
+}
+
+.green {
+  background-color: #5cb85c;
+}
+
+.gray {
+  background-color: #808080;
+}

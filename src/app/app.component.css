@@ -4,14 +4,18 @@ ag-grid-ng2 {
 }
 
 img {
-  height: 80px;
+  height: 54px;
 }
 
 .vcenter {
-  top: 25px;
+  top: 12px;
   font-size: 26px;
 }
 
 .white {
   color: white;
+}
+
+h1 {
+  font-family: museo-slab, Georgia, "Times New Roman", Times, serif;
 }

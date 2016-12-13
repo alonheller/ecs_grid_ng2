@@ -1,16 +1,16 @@
 <nav class="navbar navbar-dark bg-inverse navbar-fixed-top">
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-2">
       <img alt="In n Out" src="assets/in-n-out.png">
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-4 offset-md-3">
       <h1 class="white">FusionLive Alarms</h1>
     </div>
 
-    <div class="col-md-4 vcenter">
-      <span><i class="fa fa-spinner fa-spin fa-1x fa-fw white"></i></span>
-      <span class="tag tag-pill tag-warning pull-right">{{totalAlarmsCounter}} Alarms</span>
+    <div class="col-md-3 vcenter">
+      <span class="tag tag-pill tag-warning pull-right px-1 mr-1">{{totalAlarmsCounter}} Alarms</span>
+      <span *ngIf="isLoading" class="pull-right px-1 mr-1"><i class="fa fa-spinner fa-spin fa-1x fa-fw white"></i></span>
     </div>
   </div>
 

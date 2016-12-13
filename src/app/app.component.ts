@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   openTickets = environment.openTickets;
   totalAlarmsCounter = 0;
   refreshIntervalInSeconds = environment.refreshIntervalInSeconds;
+  isLoading:boolean;
 
   public showGrid: boolean;
   private gridOptions: GridOptions;
@@ -27,14 +28,73 @@ export class AppComponent implements OnInit {
   private columnDefs: any[];
 
   constructor(private authService: AuthService, private dataService: DataService) {
+    this.isLoading = false;
+
     this.gridOptions = {
       enableColResize: true,
-      enableSorting: true
+      enableSorting: true,
+      enableFilter: true,
+      columnDefs: [
+        {
+          headerName: "Location", field: "location", width: 220
+        },
+        {
+          headerName: "Precision", field: "precision", hide: true
+        },
+        {
+          headerName: "MeasureUnitName", field: "measureUnitName", hide: true
+        },
+        {
+          headerName: "MeasureUnitID", field: "measureUnitID", hide: true
+        },
+        {
+          headerName: "Equipment", field: "asset"
+        },
+        {
+          headerName: "Asset Measure", field: "assetMeasure"
+        },
+        {
+          headerName: "Value", field: "value",
+          cellRenderer: this.valueCellRenderer,
+          width: 100, suppressSizeToFit: true
+        },
+        {
+          headerName: "Time", field: "statusTimestamp", sort: 'desc',
+          cellRenderer: this.timeCellRenderer,
+          width: 150, suppressSizeToFit: true
+        },
+        {
+          headerName: "Duration", field: "statusTimestamp",
+          cellRenderer: this.durationCellRenderer,
+          width: 150, suppressSizeToFit: true
+        },
+        {
+          headerName: "Status", field: "status",
+          cellRenderer: this.statusCellRenderer,
+          width: 167, suppressSizeToFit: true,
+          cellClassRules: {
+            'red': function(params) {
+              return (params.value == "4" || params.value == "5" || params.value == "6" || params.value == "7" ||
+              params.value == "8" || params.value == "9" || params.value == "101" || params.value == "102")
+            },
+            'orange': function(params) {
+              return (params.value == "2" || params.value == "103")
+            },
+            'gray': function(params) {
+              return (params.value == "-1" || params.value == "0")
+            },
+            'green': function(params) {
+              return params.value == "1"
+            }
 
+          }
+        }
+      ]
     };
   }
 
   ngOnInit() {
+    this.isLoading = true;
     this.authService.login()
       .subscribe(() => this.getUserLocations());
   }
@@ -46,21 +106,22 @@ export class AppComponent implements OnInit {
       });
   }
 
+  /*private onGridReady() {
+    setTimeout(() => {
+      this.gridOptions.api.sizeColumnsToFit();
+    }, 9000);
+
+  }*/
+
   private getLocationAlarms(locationId: number) {
     this.dataService.getLocationAlarms(locationId, this.showWarnings)
       .subscribe((res) => {
         this.totalAlarmsCounter = res.length;
-        this.gridOptions.api.addEventListener('gridReady', this.onGridReady);
         this.createRowData(res);
-        this.createColumnDefs();
-        //this.gridOptions.api.setFloatingTopRowData(1);
-        this.gridOptions.api.hideOverlay();
-      });
-  }
+        this.isLoading = false;
+        this.showGrid = true;;
 
-  private onGridReady(event: Event) {
-    console.log('GRID IS READY :)')
-    this.gridOptions.api.sizeColumnsToFit();
+      });
   }
 
   private createRowData(rows: Array<any>) {
@@ -83,7 +144,7 @@ export class AppComponent implements OnInit {
     }
 
     this.gridOptions.api.setRowData(rowData);
-    ;
+    this.gridOptions.api.sizeColumnsToFit();
   }
 
   valueCellRenderer(params) {
@@ -134,45 +195,6 @@ export class AppComponent implements OnInit {
     }
 
     return statusName;
-  }
-
-  private createColumnDefs() {
-    this.columnDefs = [
-      {
-        headerName: "Location", field: "location", width: 220
-      },
-      {
-        headerName: "Precision", field: "precision", hide: true
-      },
-      {
-        headerName: "MeasureUnitName", field: "measureUnitName", hide: true
-      },
-      {
-        headerName: "MeasureUnitID", field: "measureUnitID", hide: true
-      },
-      {
-        headerName: "Equipment", field: "asset"
-      },
-      {
-        headerName: "Asset Measure", field: "assetMeasure"
-      },
-      {
-        headerName: "Value", field: "value",
-        cellRenderer: this.valueCellRenderer
-      },
-      {
-        headerName: "Time", field: "statusTimestamp", sort: 'desc',
-        cellRenderer: this.timeCellRenderer
-      },
-      {
-        headerName: "Duration", field: "statusTimestamp",
-        cellRenderer: this.durationCellRenderer
-      },
-      {
-        headerName: "Status", field: "status",
-        cellRenderer: this.statusCellRenderer
-      }
-    ];
   }
 
 
