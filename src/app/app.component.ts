@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   password = environment.password;
   showWarnings = environment.showWarnings;
   openTickets = environment.openTickets;
-
+  totalAlarmsCounter = 0;
   refreshIntervalInSeconds = environment.refreshIntervalInSeconds;
 
   public showGrid: boolean;
@@ -49,9 +49,11 @@ export class AppComponent implements OnInit {
   private getLocationAlarms(locationId: number) {
     this.dataService.getLocationAlarms(locationId, this.showWarnings)
       .subscribe((res) => {
+        this.totalAlarmsCounter = res.length;
         this.gridOptions.api.addEventListener('gridReady', this.onGridReady);
         this.createRowData(res);
         this.createColumnDefs();
+        //this.gridOptions.api.setFloatingTopRowData(1);
         this.gridOptions.api.hideOverlay();
       });
   }

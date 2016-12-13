@@ -1,12 +1,16 @@
-<nav class="navbar navbar-dark bg-inverse">
+<nav class="navbar navbar-dark bg-inverse navbar-fixed-top">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <img alt="In n Out" src="assets/in-n-out.png">
     </div>
-    <div class="col-md-4"></div>
-    <div class="col-md-2 text-right vcenter">
-      <span class="tag tag-pill tag-warning">Warning (1)</span>
-      <span class="tag tag-pill tag-danger">Disconnected, Critical (592)</span>
+
+    <div class="col-md-4">
+      <h1 class="white">FusionLive Alarms</h1>
+    </div>
+
+    <div class="col-md-4 vcenter">
+      <span><i class="fa fa-spinner fa-spin fa-1x fa-fw white"></i></span>
+      <span class="tag tag-pill tag-warning pull-right">{{totalAlarmsCounter}} Alarms</span>
     </div>
   </div>
 

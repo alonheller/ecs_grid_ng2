@@ -9,4 +9,9 @@ img {
 
 .vcenter {
   top: 25px;
+  font-size: 26px;
+}
+
+.white {
+  color: white;
 }
