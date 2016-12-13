@@ -74,7 +74,9 @@ export class AppComponent implements OnInit {
         precision: rows[i].Precision,
         measureUnitName: rows[i].MeasureUnitName,
         measureUnitID: rows[i].MeasureUnitID,
-        statusTimestamp: rows[i].StatusTimestamp
+        statusTimestamp: rows[i].StatusTimestamp,
+        alarmClear: rows[i].AlarmClear,
+        statusType: rows[i].StatusType
       });
     }
 
@@ -100,7 +102,36 @@ export class AppComponent implements OnInit {
   }
 
   statusCellRenderer(params) {
-    return `<span>${Statuses[params.value.toString()].caption}</span>`;
+    var statusName = Statuses[params.value.toString()].caption;
+
+    if (!params.data.statusType || params.data.statusType === 0) {
+      var statusNameMeta = Statuses[params.value.toString()];
+
+      if (statusNameMeta) {
+        // alarmClear == defaults.NAFEM_TRUE
+        if (params.data.alarmClear == 1) {
+          statusName += " (Ack.)";
+        }
+      }
+    }
+    else if (params.data.statusType == 1) {
+      switch (params.value) {
+        case 0:
+          statusName = 'OK';
+          break;
+        case 1:
+          statusName = 'Power Alert';
+          break;
+        case 2:
+          statusName = 'Charging Fault';
+          break;
+        case 3:
+          statusName = 'Disconnected';
+          break;
+      }
+    }
+
+    return statusName;
   }
 
   private createColumnDefs() {
